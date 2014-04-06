@@ -1,7 +1,7 @@
 # Heroku Apps:Status
 
 ## Overview
-[Heroku Apps:Status](https://github.com/pbougie/heroku-apps-status) is a [Heroku](https://www.heroku.com/) CLI plugin thats displays the status of your apps. Possible statuses: _crashed_, _down_, _idle_, _maintenance_, _no dynos_, _starting_ or _up_.
+[Heroku Apps:Status](https://github.com/pbougie/heroku-apps-status) is a [Heroku](https://www.heroku.com/) CLI plugin thats displays the status of your apps. The plugin is an add-on for the [Heroku Toolbelt](https://toolbelt.heroku.com/). Possible statuses: _crashed_, _down_, _idle_, _maintenance_, _no dynos_, _starting_ or _up_.
 
 
 ## Install
