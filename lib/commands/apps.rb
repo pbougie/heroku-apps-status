@@ -29,12 +29,12 @@ class Heroku::Command::Apps < Heroku::Command::Base
     styled_header('Apps Status')
 
     if app
-      response = @http.get(:path => "/apps/#{app}")
+      response = @http.get(path: "/apps/#{app}")
       app_data = json_decode(response.body)
 
       display(app_status(app_data))
     else
-      response = @http.get(:path => '/apps')
+      response = @http.get(path: '/apps')
       apps = json_decode(response.body)
 
       unless apps.empty?
@@ -61,7 +61,7 @@ class Heroku::Command::Apps < Heroku::Command::Base
       status = if app['maintenance']
         'maintenance'
       else
-        response = @http.get(:path => "/apps/#{app['name']}/dynos/web.1")
+        response = @http.get(path: "/apps/#{app['name']}/dynos/web.1")
         dyno = json_decode(response.body)
         dyno['id'] == 'not_found' ? 'no dynos' : dyno['state']
       end
