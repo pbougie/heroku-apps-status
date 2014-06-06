@@ -39,9 +39,9 @@ To display the status of a specific remote:
 
 To display the status of any app:
 
-    $ heroku apps:status --app <app_name>
+    $ heroku apps:status --app my-app
 	=== Apps Status
-	<app_name>: up    
+	my-app: up    
 
 
 ## Help
