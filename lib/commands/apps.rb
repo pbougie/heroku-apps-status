@@ -25,17 +25,15 @@ class Heroku::Command::Apps < Heroku::Command::Base
   #
   def status
     validate_arguments!
-    init_http_client
     styled_header('Apps Status')
 
     if app
-      response = @http.get(path: "/apps/#{app}")
-      app_data = json_decode(response.body)
-
+      response = api_request("/apps/#{app}")
+      app_data = response.body
       display(app_status(app_data))
     else
-      response = @http.get(path: '/apps')
-      apps = json_decode(response.body)
+      response = api_request("/apps")
+      apps = response.body
 
       unless apps.empty?
         apps.each { |app| display(app_status(app)) }
@@ -47,22 +45,24 @@ class Heroku::Command::Apps < Heroku::Command::Base
 
   private
 
-    def init_http_client
-      # Heroku API version 3 required; Heroku CLI uses version 2
-      api_key = Base64.encode64(":#{Heroku::Auth.password}").strip
-      headers = {
-        'Accept' => 'application/vnd.heroku+json; version=3',
-        'Authorization' => "Basic #{api_key}"
-      }
-      @http = Excon.new('https://api.heroku.com', headers: headers)
+    def api_request(path)
+      api.request(
+        :expects => 200,
+        :method => :get,
+        :path => path,
+        :headers => {
+          'Accept' => 'application/vnd.heroku+json; version=3',
+          'Content-Type' => 'application/json'
+        }
+      )
     end
 
     def app_status(app)
       status = if app['maintenance']
         'maintenance'
       else
-        response = @http.get(path: "/apps/#{app['name']}/dynos/web.1")
-        dyno = json_decode(response.body)
+        response = api_request("/apps/#{app['name']}/dynos/web.1")
+        dyno = response.body
         dyno['id'] == 'not_found' ? 'no dynos' : dyno['state']
       end
 
